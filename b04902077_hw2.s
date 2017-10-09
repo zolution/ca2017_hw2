@@ -11,9 +11,9 @@
 # TODO : change the file name/path to access the files
 # NOTE : Before you submit the code, make sure these two fields are "input.txt" and "output.txt"
 	file_in:
-		.asciiz	"input.txt"
+		.asciiz	"/Users/wchiang/Documents/school/106-1/CA/ca2017_hw2/input.txt"
 	file_out:
-		.asciiz	"output.txt"
+		.asciiz	"/Users/wchiang/Documents/school/106-1/CA/ca2017_hw2/output.txt"
 		
 # the following data is only for sample demonstration		
 	output_ascii:	
@@ -79,7 +79,7 @@
 #STEP4 integer operations
 	# TODO: operation selector
     # hint: you could write multiple "if (operator==??)then(...)" structures below
-	beq $s3, 43, addition
+    beq $s3, 43, addition
 	beq $s3, 45, substraction
 	beq $s3, 42, multiplication
 	beq $s3, 47, division
@@ -114,17 +114,46 @@ result:
 	sw	$s4, output	# output <= $s4	
 	move	$a0, $s4
 	bal	itoa		# itoa($s4)
-	
+	la $t3, output_ascii
 	# TODO: store return array to output_ascii
-
+    sb $s3, 0($t3)
+    sb $s5, 1($t3)
+    sb $s6, 2($t3)
+    sb $s7, 3($t3)
 	j	ret
 
 itoa:
 	# Input: ($a0 = input integer)
 	# Output: ( output_ascii )
 	# TODO: (you should turn an integer into a pritable char with the right ASCII code to output_ascii)
+    li $t6, 1000
+    div $a0, $t6
+	mflo $s3
+    mult $s3, $t6
+    mflo $s2
+    sub $a0, $a0, $s2
+    
+    li $t6, 100
+    div $a0, $t6
+    mflo $s5
+    mult $s5, $t6
+    mflo $s2
+    sub $a0, $a0, $s2
+    
+    li $t6, 10
+    div $a0, $t6
+    mflo $s6
+    mult $s6, $t6
+    mflo $s2
+    sub $a0, $a0, $s2
+    
+    move $s7, $a0
 
-	jr	$ra		# return
+    add $s3, $s3, 48
+    add $s5, $s5, 48
+    add $s6, $s6, 48
+    add $s7, $s7, 48
+    jr	$ra		# return
 
 
 
